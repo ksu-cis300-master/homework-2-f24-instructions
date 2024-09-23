@@ -1,0 +1,1 @@
+Copyright 2024, Joshua L. Weese. All rights reserved. The contents of this repository may **not** be copied, redistributed, or modified without explicit permission of the authors.
