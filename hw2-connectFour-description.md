@@ -1,14 +1,12 @@
-# User Requirements
-
-This assignment will focus on the game called Connect Four, also referred to as four in a row or four in a line.  It is a two player game where each player takes turns in placing chips in a vertically standing board that has **six** rows and **seven** columns. The person who gets four of their chips in a row (diagonally, vertically, or horizontally) wins.  This game can also be drawn.  If the board fills up without either player getting four in a row or if there are no more moves left that enable a player to win, then that game is considered a draw.  For the purposes of this assignment, you only need to worry about a draw when the board is full.  You will be writing a program that lets two humans play against each other in a game of Connect Four.
-
-[![http://www.abstractstrategy.com/connect-four.jpg](connect-four.jpg)](http://www.abstractstrategy.com/connect-four.jpg)
-
 # 0. Contents
 
 [TOC]
 
+# User Requirements
 
+This assignment will focus on the game called Connect Four, also referred to as four in a row or four in a line.  It is a two player game where each player takes turns in placing chips in a vertically standing board that has **six** rows and **seven** columns. The person who gets four of their chips in a row (diagonally, vertically, or horizontally) wins.  This game can also be drawn.  If the board fills up without either player getting four in a row or if there are no more moves left that enable a player to win, then that game is considered a draw.  For the purposes of this assignment, you only need to worry about a draw when the board is full.  You will be writing a program that lets two humans play against each other in a game of Connect Four. The starter code for this assignment contains a GUI as well as all of the unit tests. You should not need to place anything manually in the GUI.
+
+[![http://www.abstractstrategy.com/connect-four.jpg](connect-four.jpg)](http://www.abstractstrategy.com/connect-four.jpg)
 
 # 1. User Interface
 
@@ -18,21 +16,21 @@ The initial user interface of the game is quite bare.  Before the program execut
 
 You can see that it is quite empty.  This is because most of the UI is going to be added dynamically at run time.  This image shows what you are given in the Designer window in Visual Studio.  The rest will be added through code later.  The form is locked from being able to be resized; however, you may resize it slightly if needed depending on your computer screen's resolution.  The initial interface has three **[FlowLayoutPanel](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.flowlayoutpanel?view=net-5.0)**s  that will help organize our dynamic controls once they are loaded.
 
-- The top **FlowLayoutPanel** has two **Label**s that keep track of the user's turn.  Note that to turn the background color of a **Label** to white, modify the **BackColor** property.  The **FlowDirection** property of this panel should be set to flow from right to left. 
-- The second **FlowLayoutPanel** will contain all of the buttons that will place game pieces on the board.  The **FlowDirection** property of this panel should be set to flow from left to right.
-- The bottom **FlowLayoutPanel** will be used to contain all of the **Label**s that represent the slots on the Connect Four board. The **FlowDirection** property of this panel should be set to flow from top down.
+- The top **FlowLayoutPanel** has two **Label**s that keep track of the user's turn.  Note that to turn the background color of a **Label**, modify the **BackColor** property.  The **FlowDirection** property of this panel should already be set to flow from right to left. 
+- The second **FlowLayoutPanel** will contain all of the buttons that will place game pieces on the board.  The **FlowDirection** property of this panel should already be set to flow from left to right.
+- The bottom **FlowLayoutPanel** will be used to contain all of the **Label**s that represent the slots on the Connect Four board. The **FlowDirection** property of this panel should already be set to flow from top down.
 
 The final user interface once the game is loaded should look something like the following:
 
 ![uxLoaded](uxLoaded.png)
 
-Instructions for populating the UI at run time will be found below.
+**Note:** Your GUI might look slightly different if you are working in a monitor with a non-standard resolution or a monitor where you have DPI scaling beyond 100% in Windows. However, it should still show all buttons and columns in the correct layout. Instructions for populating the UI at run time will be found below.
 
 The interactions with the UI, overall, are quite simple.  Each of the place buttons above each column should be bound to the `uxPlaceButtonClick` method described later in this assignment.  This will cause a chip (`GamePiece`) to be placed in the last available slot.  This chip should be the same color as the Player.  After each click of a place button, the next player gets their turn.   The label in the top right hand corner of the UI indicates who's turn it is by using a label filled with the text and color of that player.  Once a player wins or the game is a draw, a message box should appear stating who won the game.  Once the user presses OK, the program should exit.
 
 # 2. Software Architecture
 
-Your program should contain these four classes, as shown in the following class diagram.  Each class will 
+Your program should contain these four classes, as shown in the following class diagram.  Note that the **PlayersTurn** enum is not stored in its own file, but inside the *namespace* in **Gamer.cs**. Do **not** place the enum declaration inside the Game class
 
 ![uml](uml.png)
 
@@ -144,7 +142,10 @@ This class serves as the UI class.  Overall, it will populate the UI dynamically
 ### 4.5.1 Fields
 
 - `private Game _game`: Declare and instantiate this field within the UserInterface class to a new Game object.  This will give the UI class access to all of the aspects of the Game class.
-- A private constant to indicate how wide each button should be. This will also be used for the squares for the pieces. The value should be 55.
+- A private constant to indicate how wide each button should be. This will also be used for the squares for the pieces. The value should be 60.
+- A private readonly field of type `Font` that will be the default font of each button. Set this to have a value of `new Font("Segoe UI", 12, GraphicsUnit.Point)`
+- A private readonly field of type `Padding` that will be used as the margin of the button and labels in the GUI. Set this to have a value of `new Padding(5)`
+- A private int to keep track of the number of buttons that have been disabled due to a column being filled up. This will be used to determine when a draw occurs.
 
 ### 4.5.2 Methods/Event Handlers
 
@@ -155,10 +156,10 @@ This class serves as the UI class.  Overall, it will populate the UI dynamically
 - `private void MakeUI()`:This needs to be modified to load all of the buttons that place the game pieces, as well as the slots on the board.  To do this, use two nested loops.  The outer loop should take care of loading each place button into the second FlowLayoutPanel. The **Button**s should have the following properties set:
 
   - **Text**: The letter for that column
-  - **Width**: 55 *//note that you should use the constant declared earlier*
-  - **Height**: 25
-  - **Margin**: 5 (top, left, right, and bottom).  *Note: You will need to construct a new [Padding](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.padding?redirectedfrom=MSDN&view=netframework-4.8) object for this value.*
-  - **Click**: Bound to the *uxPlaceButtonClick* event handler.  This can be done using this syntax:
+  - **Width**:  *// use the constant declared earlier*
+  - **Height**: `_buttonFont.Height+ _padding.Top` *// these are two of the readonly fields declared earlier*
+  - **Margin**: *// use the padding readonly field declared earlier*
+  - **Click**: Bound to the *PlaceButtonClick* event handler.  This can be done using this syntax:
 
   ```c#
   theButton.Click += new EventHandler(uxPlaceButtonClick);
@@ -166,13 +167,13 @@ This class serves as the UI class.  Overall, it will populate the UI dynamically
 
   You can add the newly created **Button** to the panel by calling the `Add` method from the `Controls` property of the panel.  Before moving onto the next column, be sure to load this column's slots on the board by using another loop based off of the `Game.ColumnSize` constant.  Each slot is represented by a **Label**.  They should be added to the UI in descending order  These labels should have the following properties set 
 
-  - **Width**: 55 *//note that you should use the constant declared earlier*
-  - **Height**: 55 *//note that you should use the constant declared earlier*
-  - **Margin**: 5 (top, right, bottom, and left)
+  - **Width**:  *// use the constant declared earlier*
+  - **Height**:  *// use the constant declared earlier*
+  - **Margin**: // use the padding readonly field declared earlier
   - **BackColor**: **Color**.White
   - **Name**: Column letter + row number
 
-  Make sure you also set the turn **Label** text to "Red", the `BackColor` to `Color.Red`, and the `ForColor` to `Color.Black` before exiting the method. You will need to also set the **uxBoardContainer**'s Width and Height properties. For my screen, `(_buttonWidth + 10) * Game.ColumnSize + 10` works for the Height and `(_buttonWidth + 20) * Game.ColumnSize + 10` works for the Width; however, you might need to tweak these numbers slightly to make the GUI appear correctly on your screen.
+  Make sure you also set the turn **Label** text to "Red", the `BackColor` to `Color.Red`, and the `ForColor` to `Color.Black` before exiting the method. You will need to also set the **uxBoardContainer**'s Width and Height properties. For my screen, `(_buttonWidth + _padding.All*2) * Game.ColumnSize + _padding.All*2` works for the Height and `(_buttonWidth + _padding.All*4) * Game.ColumnSize + _padding.All*2` works for the Width; however, you might need to tweak these numbers slightly to make the GUI appear correctly on your screen.
 
 ### 4.5.3 Constructors
 
@@ -184,10 +185,10 @@ There are a good number of unit tests (particularly for the Game class) that wil
 
 ![draw](draw.png)
 
-## Submitting Your Assignment
+## 6. Submitting Your Assignment
 
 Be sure to **commit** all your changes, then **push** your commits to your GitHub repository. Then submit the *entire URL* of the commit that you want graded. 
 
 The repositories for the homework assignments for this class are set up to use GitHub's autograding feature to track push times. No actual testing/grading is done, but after each push, the GitHub page for the repository will show a green check mark on the line indicating the latest commit. Clicking that check mark will display a popup indicating that all checks have passed, regardless of whether your program works. You may also get an email indicating that all checks have passed. The only purpose for using the autograding feature in this way is to give us a backup indication of your push times in case you submitted your assignment incorrectly.
 
-**Important:** If the URL you submit does not contain the 40-hex-digit fingerprint of the commit you want graded, **you will receive a 0**, as this fingerprint is the only way we can verify that you completed your code prior to submitting your assignment. We will only grade the source code that is included in the commit that you submit. Therefore, be sure that the commit on GitHub contains all four ".cs" files, and that they are the version you want graded. This is especially important if you had any trouble committing or pushing your code.
+**Important:** We will only grade the source code that is included in the commit that you submit. Therefore, be sure that the commit on GitHub contains all your project files that you have changed, and that they are the version you want graded. This is especially important if you had any trouble committing or pushing your code.
