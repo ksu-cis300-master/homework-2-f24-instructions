@@ -124,7 +124,7 @@ The **Game** class is a public class to represent the game board. You will need 
 
 ### 4.4.3 Constructors
 
-- `public Game()`: This is the constructor for the Game class.  For each of the column labels, use the `Columns` property to create the column headers double linked list as outlined in "Representing the Board" section above.  Note that the columns will not have any thing placed in them, so the Data property will not need to be set here.  The unit tests will be expecting that the Column property to be referencing the last column (column G) once the constructor has finished.
+- `public Game()`: This is the constructor for the Game class.  For each of the column labels, use the `Columns` property to create the column headers double linked list as outlined in "Representing the Board" section above.  Note that the columns will not have any thing placed in them, so the Data property will not need to be set here.  The unit tests will be expecting that the Column property to be referencing the last column (column G) once the constructor has finished. *Note you may have a warning that Column must contain a non-null value when exiting the constructor. You can ignore this warning since Column should not be null if you have at least one column in the game.*
 
 ### 4.4.4 Methods
 
