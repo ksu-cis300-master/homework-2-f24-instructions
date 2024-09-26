@@ -114,8 +114,8 @@ The **Game** class is a public class to represent the game board. You will need 
 
 - `public const int ColumnSize`:  The number of slots in each column.  This should be set to 6.  The [**const**](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const) keyword is used to declare a constant.  A constant field *cannot* be changed or modified once it is declared.
 - `public const string ColumnLabels`: A string that represents all of the column labels.  This should be set to *ABCDEFG*.
-- `public readonly Color[] PlayerColors`:  A `readonly` array that keeps track of the available colors for the players.  The array should contain `Color.Red` and `Color.Black` in that order.  As a refresher, see [this page](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/single-dimensional-arrays) for how to initialize an array with values.  The [**readonly**](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly) keyword is a modifier that prevents a field from being modified except when declared or in the constructor of the class it belongs to.
-- Two additional public constant integers, one to indicate the size of each column (6) and one to indicate how many pieces needed in a row to win (4).
+- `public readonly Color[] PlayerColors`:  A `readonly` array that keeps track of the available colors for the players.  The array should contain `Color.Red` and `Color.Black` in that order.  As a refresher, see [this page](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/single-dimensional-arrays) for how to initialize an array with values (*Note: since .NET 6 uses an older version of C#, the [] syntax introduced in C# v12 will not work, use {} instead)*.  The [**readonly**](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly) keyword is a modifier that prevents a field from being modified except when declared or in the constructor of the class it belongs to.
+- One additional public constant integer to indicate how many pieces needed in a row to win (4).
 
 ### 4.4.2 Properties
 
